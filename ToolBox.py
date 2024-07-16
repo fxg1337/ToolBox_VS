@@ -24,17 +24,6 @@ class Fxg(Tk):
         
         self.title("ToolBox")
         self.minsize(250, 180)
-
-        #self.labelFrame = ttk.LabelFrame(self, text = "")
-        #self.labelFrame.grid(column = 1, row = 0)
-
-        #self.labelFrametest = ttk.LabelFrame(self, text = "")
-        #self.labelFrametest.grid(column = 2, row = 0)
-
-       #self.labelFrametest1 = ttk.LabelFrame(self, text = "progress")
-       #self.labelFrametest1.grid(column = 3, row = 3)
-
-          
         self.BEncode()
         self.BRaudio()
         self.fixMoov()
@@ -163,13 +152,13 @@ class Fxg(Tk):
     def PST_Value(self):
         self.PST_Value = ttk.Entry(width=11) 
         self.PST_Value.grid(column = 3, row = 5)
-        self.PST_Value.insert(END,"5")
+        self.PST_Value.insert(END,"0.50")
         ToolTip(self.PST_Value, msg="Type pst value")                             
 
-# set the action of each button
+###~~set the action of each button~~###
 
-
-    def reEncode(self):
+    #Rencode video withe same settings
+    def reEncode(self): 
     
         folder_selected = filedialog.askdirectory(title="Select folder with files for re-encode")
         
@@ -204,7 +193,7 @@ class Fxg(Tk):
         
         self.progress.destroy()
         os.remove("ffmpeg.exe")
-        
+    # Remove audio from files leaveing a .mp3 file and a mute video     
     def removeAduio(self):
         folder_selected = filedialog.askdirectory(title="Selcte folder with file to have audio removed")
         sufx = self.sufex_Encode.get()
@@ -517,6 +506,9 @@ class Fxg(Tk):
                 re = "ffmpeg -fflags +genpts -y -i " + file_name + " -c:a copy -filter:v setpts="+Pst+"*PTS " "_"+file_name
                 subprocess.call(re, shell=True)
 
+        self.progress.destroy()
+        os.remove("ffmpeg.exe")
+
     def OSExit(self):
         self.destroy()
         self.quit()
@@ -524,3 +516,4 @@ class Fxg(Tk):
 
 fxg = Fxg()
 fxg.mainloop()
+
