@@ -15,6 +15,7 @@ from tkinter import messagebox
 import ffmpeg
 from tktooltip import ToolTip
 import zipfile
+import threading
 
 #set the window and lable frames
 
@@ -45,84 +46,87 @@ class Fxg(Tk):
 #set the buttons
         
     def  BEncode(self):
-
-        self.BEncode = ttk.Button(width = 16,text = "Re Enecode" ,command = self.reEncode)
-        self.BEncode.grid(column = 1, row = 1)
-        ToolTip(self.BEncode, msg="Start to Re-encode video")
+        
+        t1 = threading.Thread(target=self.reEncode) #set up threading 
+        self.BEncode = ttk.Button(width = 16,text = "Re Enecode" ,command = t1.start) # push botton to start funtion
+        self.BEncode.grid(column = 1, row = 1) # set button position 
+        ToolTip(self.BEncode, msg="Start to Re-encode video") # set tooltip info 
+        
         
         
 
     def BRaudio(self):
-        self.BRaudio = ttk.Button(width = 16,text = "Remove Audio",command = self.removeAduio)
-        self.BRaudio.grid(column = 1, row = 2)
-        ToolTip(self.BRaudio, msg="Remove audio from file")
+        t2 = threading.Thread(target=self.removeAduio) #set up threading 
+        self.BRaudio = ttk.Button(width = 16,text = "Remove Audio",command = t2.start) # push botton to start funtion
+        self.BRaudio.grid(column = 1, row = 2)# set button position 
+        ToolTip(self.BRaudio, msg="Remove audio from file")# set tooltip info 
 
     def fixMoov(self):
-
-        self.fixMoov = ttk.Button(width = 16,text = "Fix Moov Atom",command = self.fixmoov)
-        self.fixMoov.grid(column = 1, row = 3)
-        ToolTip(self.fixMoov, msg="repaire missing moov atoms")
+        t3 = threading.Thread(target=self.fixmoov)#set up threading 
+        self.fixMoov = ttk.Button(width = 16,text = "Fix Moov Atom",command = t3.start)# push botton to start funtion
+        self.fixMoov.grid(column = 1, row = 3)# set button position 
+        ToolTip(self.fixMoov, msg="repaire missing moov atoms")# set tooltip info 
         
     def setEncode(self):
-
-        self.setEncode = ttk.Button(width = 16,text = "Set Encode",command = self.setencode)
-        self.setEncode.grid(column = 1, row = 4)
-        ToolTip(self.setEncode , msg="Set Encode")
+        t4 = threading.Thread(target=self.setencode)#set up threading 
+        self.setEncode = ttk.Button(width = 16,text = "Set Encode",command = t4.start)# push botton to start funtion
+        self.setEncode.grid(column = 1, row = 4)# set button position 
+        ToolTip(self.setEncode , msg="Set Encode") # set tooltip info 
         
 
     def imagePerFrame(self):
-
-        self.imagePerFrame = ttk.Button(width = 16,text = "Img Per Frame ",command = self.framePer)
-        self.imagePerFrame.grid(column = 2, row = 1)
-        ToolTip(self.imagePerFrame , msg="extra img per frame")
+        t5 = threading.Thread(target=self.framePer)#set up threading 
+        self.imagePerFrame = ttk.Button(width = 16,text = "Img Per Frame ",command = t5.start)# push botton to start funtion
+        self.imagePerFrame.grid(column = 2, row = 1)# set button position 
+        ToolTip(self.imagePerFrame , msg="extra img per frame")# set tooltip info 
 
     def frameCunt(self):
-
-        self.framecunt = ttk.Button(width = 16,text = "Frame Count ",command = self.framecount)
-        self.framecunt.grid(column = 2, row = 2)
-        ToolTip(self.framecunt, msg="Cuts first and last frame of videos")
+        t6 = threading.Thread(target=self.framecount) #set up threading 
+        self.framecunt = ttk.Button(width = 16,text = "Frame Count ",command = t6.start)# push botton to start funtion
+        self.framecunt.grid(column = 2, row = 2)# set button position 
+        ToolTip(self.framecunt, msg="Cuts first and last frame of videos")# set tooltip info 
 
     def releace(self):
-
-        self.releace = ttk.Button(width = 16,text = "Release ",command = self.release)
-        self.releace.grid(column = 2, row = 3)
-        ToolTip(self.releace, msg="Run though the releace checks")
+        t7 = threading.Thread(target=self.release) #set up threading
+        self.releace = ttk.Button(width = 16,text = "Release ",command = t7.start)# push botton to start funtion
+        self.releace.grid(column = 2, row = 3)# set button position 
+        ToolTip(self.releace, msg="Run though the releace checks")# set tooltip info 
 
     def Unzip(self):
-
-        self.unzip = ttk.Button(width = 16,text = "Unzip ",command = self.Unzipfile)
-        self.unzip.grid(column = 2, row = 4)
-        ToolTip(self.unzip, msg="Unzips Visualsoft zip file")
+        t8 = threading.Thread(target=self.Unzipfile) #set up threading
+        self.unzip = ttk.Button(width = 16,text = "Unzip ",command = t8.start)# push botton to start funtion
+        self.unzip.grid(column = 2, row = 4)# set button position 
+        ToolTip(self.unzip, msg="Unzips Visualsoft zip file")# set tooltip info 
 
     def Frstlast(self):
-
-        self.frstlast = ttk.Button(width = 16,text = "Cut F/L frame ",command = self.Cutfirstlast)
-        self.frstlast.grid(column = 1, row = 5)
-        ToolTip(self.frstlast, msg="Cuts first and last frame of videos")
+        t9 = threading.Thread(target=self.Cutfirstlast) #set up threading
+        self.frstlast = ttk.Button(width = 16,text = "Cut F/L frame ",command = t9.start)# push botton to start funtion
+        self.frstlast.grid(column = 1, row = 5)# set button position 
+        ToolTip(self.frstlast, msg="Cuts first and last frame of videos")# set tooltip info 
         
     def PST_rep(self):
-
-        self.PST_rep = ttk.Button(width = 16,text = "PST repair ",command = self.pstEncode)
-        self.PST_rep.grid(column = 2, row = 5)
-        ToolTip(self.PST_rep, msg="repare video withe PTS")
+        t10 = threading.Thread(target=self.pstEncode) #set up threading
+        self.PST_rep = ttk.Button(width = 16,text = "PST repair ",command = t10.start)# push botton to start funtion
+        self.PST_rep.grid(column = 2, row = 5)# set button position 
+        ToolTip(self.PST_rep, msg="repare video withe PTS")# set tooltip info 
 
     def Exit(self):
-
-        self.exit = ttk.Button(width = 16,text = "Exit ",command = self.OSExit)
-        self.exit.grid(column = 1, row = 7)
-        ToolTip(self.exit, msg="Close application")
+        t11 = threading.Thread(target=self.OSExit) #set up threading
+        self.exit = ttk.Button(width = 16,text = "Exit ",command = t11.start)# push botton to start funtion
+        self.exit.grid(column = 1, row = 7)# set button position 
+        ToolTip(self.exit, msg="Close application")# set tooltip info 
 
 
         
-# set the comboboxs
+    #Set the combo and entry boxs
 
     def  sufex_Encode(self):
          
          self.sufex_Encode = ttk.Combobox(width=8, state='readonly')
          self.sufex_Encode['values']=(".mp4", ".mpg", ".asf") 
-         self.sufex_Encode.grid(column = 3, row = 1)
-         self.sufex_Encode.set(".mp4")
-         ToolTip(self.sufex_Encode, msg="Select Sufix")
+         self.sufex_Encode.grid(column = 3, row = 1)# set position 
+         self.sufex_Encode.set(".mp4")# Set defual vlaue
+         ToolTip(self.sufex_Encode, msg="Select Sufix")# set tooltip info 
 
          
          
@@ -130,30 +134,30 @@ class Fxg(Tk):
         
          self.frame_Encode = ttk.Combobox(width=8, state='readonly')
          self.frame_Encode['values']=("25", "29.92", "30", "60") 
-         self.frame_Encode.grid(column = 3, row = 2)
-         self.frame_Encode.set("25")
-         ToolTip(self.frame_Encode, msg="Select FrameRate")
+         self.frame_Encode.grid(column = 3, row = 2)# set position 
+         self.frame_Encode.set("25") # Set defual vlaue
+         ToolTip(self.frame_Encode, msg="Select FrameRate")# set tooltip info 
 
          
     def  bit_Encode(self):
         
          self.bit_Encode = ttk.Combobox(width=8, state='readonly')
          self.bit_Encode['values']=("1", "2", "3", "4","5","6",) 
-         self.bit_Encode.grid(column = 3, row = 3)
-         self.bit_Encode.set("1")
-         ToolTip(self.bit_Encode, msg="Select BitRate")
+         self.bit_Encode.grid(column = 3, row = 3)# set position 
+         self.bit_Encode.set("1")# Set defual vlaue
+         ToolTip(self.bit_Encode, msg="Select BitRate")# set tooltip info 
 
     def version_number(self):
          self.version_number = ttk.Entry(width=11) 
-         self.version_number.grid(column = 3, row = 4)
-         self.version_number.insert(END,"11")
-         ToolTip(self.version_number, msg="Type version number")
+         self.version_number.grid(column = 3, row = 4)# set position 
+         self.version_number.insert(END,"11")# Set defual vlaue
+         ToolTip(self.version_number, msg="Type version number")# set tooltip info 
          
     def PST_Value(self):
         self.PST_Value = ttk.Entry(width=11) 
-        self.PST_Value.grid(column = 3, row = 5)
-        self.PST_Value.insert(END,"0.50")
-        ToolTip(self.PST_Value, msg="Type pst value")                             
+        self.PST_Value.grid(column = 3, row = 5)# set position 
+        self.PST_Value.insert(END,"0.50")# Set defual vlaue
+        ToolTip(self.PST_Value, msg="Type pst value")     # set tooltip info                         
 
 ###~~set the action of each button~~###
 
