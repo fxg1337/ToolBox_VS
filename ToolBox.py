@@ -520,4 +520,3 @@ class Fxg(Tk):
 
 fxg = Fxg()
 fxg.mainloop()
-
