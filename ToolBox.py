@@ -406,7 +406,7 @@ class Fxg(Tk):
     def release(self):
            #set list
         toDo = ["All tests have been past in testing spreadsheet","Release signed off by Mark or Bill?","Release installer built day of release?",
-     "Installer tested All applications run, Help file OK, PDFs OK.","Check that the version number is correct on the splash screen/about box"," Does a Freash install work.",
+     "Installer tested All applications run, Help file OK, PDFs OK and marked off in testpad.","Check that the version number is correct on the splash screen/about box"," Does a Freash install work.",
      "Does installing over the top of old version work?","Installers for Suite and Review placed in Installations folder on W drive",
      "Previous installers moved to “Installers Superseded” folder.","What’s New file updated on the W drive","What's new use to create Knowledgebase?",
         "What's new use to create Email to clients?","Publish Knowledgebase?","Whats New file attached to Knowledgebase article Whats New File The Latest Updates","Update manuals on Knowledgebase",
