@@ -524,18 +524,23 @@ class Fxg(Tk):
          
         try:
             list = filedialog.askopenfilename(filetypes=[("text file", "*.txt")])
-        except IOError:
-            raise ValueError
+        except ValueError:
+            raise messagebox.showinfo("Failed to create folders")
 
         try:
             with open(list) as file:
                 names = file.read().splitlines()
-        except ValueError:
-            raise ValueError
+        except FileNotFoundError:
+            messagebox.showinfo (" Error", "No file selctected")
+            sys.exit()
              
         input_folder = filedialog.askdirectory()
-        os.chdir(input_folder)
-
+        try:
+            os.chdir(input_folder)
+        except OSError:
+            messagebox.showinfo("Error","No Folder selected")
+            sys.exit()
+            
         try:
              for name in names:
                  if not os.path.exists(name):
@@ -544,7 +549,7 @@ class Fxg(Tk):
                  else:
                      print(f"Folder '{name}' already exists.")
         except ValueError:
-            messagebox.showinfo("Failed to create folders")
+            messagebox.showinfo("Error","Failed to create folders")
 
         print("Folders created successfully.")
 
