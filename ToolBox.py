@@ -41,6 +41,7 @@ class Fxg(Tk):
         self.Frstlast()
         self.PST_Value()
         self.PST_rep()
+        self.Creat_folderB()
         
         
 #set the buttons
@@ -51,8 +52,6 @@ class Fxg(Tk):
         self.BEncode = ttk.Button(width = 16,text = "Re Enecode" ,command = t1.start) # push botton to start funtion
         self.BEncode.grid(column = 1, row = 1) # set button position 
         ToolTip(self.BEncode, msg="Start to Re-encode video") # set tooltip info 
-        
-        
         
 
     def BRaudio(self):
@@ -108,12 +107,19 @@ class Fxg(Tk):
         t10 = threading.Thread(target=self.pstEncode) #set up threading
         self.PST_rep = ttk.Button(width = 16,text = "PST repair ",command = t10.start)# push botton to start funtion
         self.PST_rep.grid(column = 2, row = 5)# set button position 
-        ToolTip(self.PST_rep, msg="repare video withe PTS")# set tooltip info 
+        ToolTip(self.PST_rep, msg="repare video withe PTS")# set tooltip info
+
+    def Creat_folderB(self):
+        t11 = threading.Thread(target=self.Creat_folder) #set up threading
+        self.exit = ttk.Button(width = 16,text = "Create Folder ",command = t11.start)# push botton to start funtion
+        self.exit.grid(column = 1, row = 7)# set button position
+        ToolTip(self.exit, msg="Create folders form list")# set tooltip info 
+        
 
     def Exit(self):
-        t11 = threading.Thread(target=self.OSExit) #set up threading
-        self.exit = ttk.Button(width = 16,text = "Exit ",command = t11.start)# push botton to start funtion
-        self.exit.grid(column = 1, row = 7)# set button position 
+        t12 = threading.Thread(target=self.OSExit) #set up threading
+        self.exit = ttk.Button(width = 16,text = "Exit ",command = t12.start)# push botton to start funtion
+        self.exit.grid(column = 2, row = 7)# set button position 
         ToolTip(self.exit, msg="Close application")# set tooltip info 
 
 
@@ -512,6 +518,39 @@ class Fxg(Tk):
 
         self.progress.destroy()
         os.remove("ffmpeg.exe")
+
+
+    def Creat_folder(self):
+         
+        try:
+            list = filedialog.askopenfilename(filetypes=[("text file", "*.txt")])
+        except IOError:
+            raise ValueError
+
+        try:
+            with open(list) as file:
+                names = file.read().splitlines()
+        except ValueError:
+            raise ValueError
+             
+        input_folder = filedialog.askdirectory()
+        os.chdir(input_folder)
+
+        try:
+             for name in names:
+                 if not os.path.exists(name):
+                     os.makedirs(name)
+                     print(f"Folder '{name}' created.")
+                 else:
+                     print(f"Folder '{name}' already exists.")
+        except ValueError:
+            messagebox.showinfo("Failed to create folders")
+
+        print("Folders created successfully.")
+
+        
+            
+         
 
     def OSExit(self):
         self.destroy()
