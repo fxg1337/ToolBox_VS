@@ -1,0 +1,95 @@
+name: Build & Release EXE
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    # ✅ Checkout repo
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    # ✅ Setup Python
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    # ✅ Install dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller pandas matplotlib ffmpeg-python tktooltip openpyxl
+
+    # ✅ Generate version (date + commit)
+    - name: Generate version
+      id: version
+      run: |
+        $date = Get-Date -Format "yyyy.MM.dd"
+        $shortSha = "${{ github.sha }}".Substring(0,7)
+        $version = "$date-$shortSha"
+        echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+
+    # ✅ Build EXE (no console + icon)
+    - name: Build EXE
+      run: |
+        pyinstaller --clean --onefile --noconsole --icon=icon.ico --name ToolBox_VS ToolBox.py `
+          --hidden-import pandas `
+          --hidden-import matplotlib `
+          --hidden-import tkinter `
+          --hidden-import ffmpeg `
+          --hidden-import tktooltip `
+          --hidden-import openpyxl
+
+    # ✅ Rename EXE with version
+    - name: Rename EXE
+      id: rename
+      run: |
+        $exeName = "ToolBox_VS-${{ steps.version.outputs.VERSION }}.exe"
+        Rename-Item dist/ToolBox_VS.exe $exeName
+        echo "EXE_NAME=$exeName" >> $env:GITHUB_OUTPUT
+
+    # ✅ Create ZIP package
+    - name: Create ZIP
+      run: |
+        $zipName = "ToolBox_VS-${{ steps.version.outputs.VERSION }}.zip"
+        Compress-Archive -Path dist/${{ steps.rename.outputs.EXE_NAME }} -DestinationPath dist/$zipName
+
+    # ✅ Upload artifact (backup)
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: toolbox-build
+        path: dist/*
+
+    # ✅ Create NEW release every build
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: build-${{ steps.version.outputs.VERSION }}
+        name: ToolBox Build ${{ steps.version.outputs.VERSION }}
+        body: |
+          ✅ Automated Build
+
+          📦 Version: ${{ steps.version.outputs.VERSION }}
+          🔗 Commit: ${{ github.sha }}
+
+          ## Included files
+          - ToolBox_VS EXE (no console window)
+          - ZIP package
+
+          ⚠️ First run may download FFmpeg automatically.
+        files: |
+          dist/*.exe
+          dist/*.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
